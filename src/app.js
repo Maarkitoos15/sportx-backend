@@ -5,7 +5,7 @@ const routes = require('./routes');
 dotenv.config();
 
 const app = express();
-const PORT = 3000; // Fallback por si PORT no está definido
+const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(express.json());
