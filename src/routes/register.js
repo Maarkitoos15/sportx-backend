@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
+
+router.use(cors());
+
+router.get('/', (req, res) => {
+  res.send('API SportX corriendo');
+});
 
 // Endpoint para registrar un nuevo usuario
 router.post('/auth/register', async (req, res) => {
