@@ -5,6 +5,7 @@ const cors = require('cors');
 
 // Importar rutas adicionales
 const registerRoutes = require('./register');
+const loginRoute = require('./login');
 
 router.use(cors());
 
