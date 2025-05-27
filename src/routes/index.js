@@ -22,7 +22,7 @@ router.get('/productos/index', async (req, res) => {
 });
 
 // 🛒 Ruta para obtener todos los productos
-router.get('/productos', async (req, res) => {
+router.get('/p/productos', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM productos');
     res.json(result.rows);
