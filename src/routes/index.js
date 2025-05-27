@@ -10,6 +10,7 @@ router.use(cors());
 
 // Montar subrutas
 router.use('/register', registerRoutes); // <-- Esto expone /api/register
+router.use('/login', loginRoute);
 
 // Ruta base
 router.get('/', (req, res) => {
