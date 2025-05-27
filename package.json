@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test-db": "node src/routes/test-db.js"
+    "test-db": "node src/routes/test-db.js",
+    "postinstall": "npm rebuild bcrypt --build-from-source"
   },
   "keywords": [],
   "author": "",
