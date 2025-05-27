@@ -3,14 +3,20 @@ const router = express.Router();
 const db = require('../config/db');
 const cors = require('cors');
 
+// Importar rutas adicionales
+const registerRoutes = require('./register');
+
 router.use(cors());
+
+// Montar subrutas
+router.use('/register', registerRoutes); // <-- Esto expone /api/register
 
 // Ruta base
 router.get('/', (req, res) => {
   res.send('API SportX corriendo');
 });
 
-// 🛍️ Ruta para obtener 4 productos aleatorios
+// Productos aleatorios
 router.get('/productos/index', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM productos ORDER BY RANDOM() LIMIT 4');
@@ -21,7 +27,7 @@ router.get('/productos/index', async (req, res) => {
   }
 });
 
-// 🛒 Ruta para obtener todos los productos
+// Todos los productos
 router.get('/p/productos', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM productos');

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 router.post('/register', async (req, res) => {
   const { nombre, email, password } = req.body;
@@ -17,6 +17,7 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     await db.query(
       'INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3)',
       [nombre, email, hashedPassword]
@@ -24,9 +25,10 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ message: 'Usuario registrado exitosamente' });
   } catch (err) {
-    console.error('Error al registrar usuario:', err);
+    console.error('Error al registrar:', err);
     res.status(500).json({ message: 'Error del servidor' });
   }
 });
 
 module.exports = router;
+``
