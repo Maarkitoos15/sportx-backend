@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const routes = require('./routes'); // rutas generales (productos)
-const registerRoute = require('./routes/register'); // ruta específica de registro
+const registerRoute = require('./routes/register');
+const loginRoute = require('./routes/login'); // ruta específica de registro
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ app.use(express.json());
 
 // Rutas
 app.use('/api', routes);
-app.use('/api', registerRoute); // aquí se añade /api/register
+app.use('/api', registerRoute); 
+app.use('/api', loginRoute);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
