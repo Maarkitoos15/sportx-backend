@@ -4,7 +4,6 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs'); // usa bcrypt si no cambiaste
 const jwt = require('jsonwebtoken');
 
-// 🔐 Ruta para iniciar sesión
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -25,11 +24,6 @@ router.post('/login', async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
-
-    // Opcional: crear token
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'secreto', {
-      expiresIn: '1h',
-    });
 
     res.status(200).json({ message: 'Login exitoso', token });
   } catch (err) {
