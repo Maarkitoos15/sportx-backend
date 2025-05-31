@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const bcrypt = require('bcryptjs'); // usa bcrypt si no cambiaste
-const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -25,7 +24,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
 
-    res.status(200).json({ message: 'Login exitoso', token });
+    res.status(200).json({ message: 'Login exitoso'});
   } catch (err) {
     console.error('Error en login:', err);
     res.status(500).json({ message: 'Error del servidor' });
