@@ -44,14 +44,45 @@ router.get('/p/productos', async (req, res) => {
 router.get('/email/usuario', async (req, res) => {
   const email = req.query.email;
 
+  if (!email) {
+    return res.status(400).json({ message: 'El email es obligatorio' });
+  }
+
   try {
     const result = await db.query('SELECT * FROM usuarios WHERE email = $1', [email]);
-    res.json(result.rows);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json({ id: result.rows[0].id });
   } catch (err) {
-    console.error('Error al obtener productos:', err);
+    console.error('Error al obtener el ID del usuario:', err);
     res.status(500).send('Error del servidor');
   }
 });
+
+// Obtener ventas por ID de usuario
+router.get('/ventas/:id_usuario', async (req, res) => {
+  const { id_usuario } = req.params;
+
+  try {
+    const result = await db.query(
+      'SELECT * FROM ventas WHERE id_usuarios = $1 ORDER BY date DESC',
+      [id_usuario]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron ventas para este usuario' });
+    }
+
+    res.json(result.rows); // Devuelve todas las ventas del usuario en formato JSON
+  } catch (err) {
+    console.error('Error al obtener ventas del usuario:', err);
+    res.status(500).json({ message: 'Error del servidor al obtener las ventas' });
+  }
+});
+
 
 router.post('/ventas', async (req, res) => {
   const { price, usuario_id } = req.body;
@@ -75,6 +106,8 @@ router.post('/ventas', async (req, res) => {
     res.status(500).json({ message: 'Error del servidor al registrar la venta' });
   }
 });
+
+
 
 
 
