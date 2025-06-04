@@ -94,12 +94,14 @@ router.post('/ventas', async (req, res) => {
   }
 
   // Obtener la hora española exacta como ISO string
-  const dateSpain = DateTime.now().setZone('Europe/Madrid').toISO();
+  const dateSpainFormatted = DateTime.now()
+    .setZone('Europe/Madrid')
+    .toFormat('dd-MM-yyyy HH:mm:ss');
 
   try {
     const result = await db.query(
       'INSERT INTO ventas (price, id_usuarios, date) VALUES ($1, $2, $3) RETURNING *',
-      [price, usuario_id, dateSpain]
+      [price, usuario_id, dateSpainFormatted]
     );
 
     res.status(201).json({ message: 'Venta registrada exitosamente', venta: result.rows[0] });
