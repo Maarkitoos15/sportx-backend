@@ -84,32 +84,31 @@ router.get('/ventas/:id_usuario', async (req, res) => {
 });
 
 
+const { DateTime } = require('luxon');
+
 router.post('/ventas', async (req, res) => {
- const { price, usuario_id } = req.body;
+  const { price, usuario_id } = req.body;
 
-// Validación de campos obligatorios
-if (!price || !usuario_id) {
-  return res.status(400).json({ message: 'Todos los campos son obligatorios' });
-}
+  if (!price || !usuario_id) {
+    return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+  }
 
-// Hora en España (CET/CEST)
-const dateSpain = new Date(
-  new Date().toLocaleString("es-ES", { timeZone: "Europe/Madrid" })
-);
+  // Obtener la hora española exacta como ISO string
+  const dateSpain = DateTime.now().setZone('Europe/Madrid').toISO();
 
-try {
-  const result = await db.query(
-    'INSERT INTO ventas (price, id_usuarios, date) VALUES ($1, $2, $3) RETURNING *',
-    [price, usuario_id, dateSpain]
-  );
+  try {
+    const result = await db.query(
+      'INSERT INTO ventas (price, id_usuarios, date) VALUES ($1, $2, $3) RETURNING *',
+      [price, usuario_id, dateSpain]
+    );
 
-  res.status(201).json({ message: 'Venta registrada exitosamente', venta: result.rows[0] });
-} catch (err) {
-  console.error('Error al registrar venta:', err);
-  res.status(500).json({ message: 'Error del servidor al registrar la venta' });
-}
-
+    res.status(201).json({ message: 'Venta registrada exitosamente', venta: result.rows[0] });
+  } catch (err) {
+    console.error('Error al registrar venta:', err);
+    res.status(500).json({ message: 'Error del servidor al registrar la venta' });
+  }
 });
+
 
 
 module.exports = router;
